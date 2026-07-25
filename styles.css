@@ -190,7 +190,7 @@ h1 {
   transform: scale(1);
   filter: blur(0.2px);
   box-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
-  animation: float-splat 60s linear forwards;
+  animation: float-splat 12s linear forwards;
 }
 
 @keyframes float-splat {
@@ -203,7 +203,7 @@ h1 {
   }
   100% {
     opacity: 0;
-    transform: scale(1.2) translate(var(--drift-x, 80px), var(--drift-y, -120px));
+    transform: scale(1.2) translate(var(--drift-x, 180px), var(--drift-y, -220px));
   }
 }
 

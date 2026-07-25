@@ -1,6 +1,17 @@
 const titleEl = document.getElementById("message-title");
 const textEl = document.getElementById("message-text");
 const paintLayer = document.getElementById("paint-layer");
+const backgroundMusic = document.getElementById("background-music");
+
+function startBackgroundMusic() {
+  if (!backgroundMusic) return;
+  backgroundMusic.volume = 0.25;
+  backgroundMusic.play().catch(() => {
+    // Ignore autoplay restrictions in the browser.
+  });
+}
+
+window.addEventListener("load", startBackgroundMusic);
 
 function showSurprise(button, event) {
   titleEl.textContent = button.dataset.title;
@@ -10,8 +21,8 @@ function showSurprise(button, event) {
   splat.className = "paint-splat";
 
   const size = 70 + Math.floor(Math.random() * 45);
-  const driftX = (Math.random() - 0.5) * 360;
-  const driftY = (Math.random() - 0.5) * 360;
+  const driftX = (Math.random() - 0.5) * 700;
+  const driftY = (Math.random() - 0.5) * 700;
   const layerRect = paintLayer.getBoundingClientRect();
   splat.style.left = `${event.clientX - layerRect.left - size / 2}px`;
   splat.style.top = `${event.clientY - layerRect.top - size / 2}px`;
@@ -24,7 +35,7 @@ function showSurprise(button, event) {
 
   setTimeout(() => {
     splat.remove();
-  }, 60000);
+  }, 12000);
 }
 
 function getButtonColor(button) {

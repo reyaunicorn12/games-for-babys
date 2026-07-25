@@ -1,6 +1,16 @@
 const titleEl = document.getElementById("message-title");
 const textEl = document.getElementById("message-text");
 const paintLayer = document.getElementById("paint-layer");
+let audioContext;
+
+const soundPatterns = {
+  meow: { type: "triangle", start: 760, end: 950, duration: 0.22, release: 0.18 },
+  quack: { type: "sine", start: 620, end: 430, duration: 0.16, release: 0.1 },
+  moo: { type: "sawtooth", start: 180, end: 145, duration: 0.3, release: 0.2 },
+  oink: { type: "square", start: 240, end: 220, duration: 0.2, release: 0.15 },
+  baa: { type: "triangle", start: 400, end: 360, duration: 0.24, release: 0.14 },
+  woof: { type: "sine", start: 160, end: 95, duration: 0.18, release: 0.12 }
+};
 
 document.querySelectorAll(".color-button").forEach((button) => {
   button.addEventListener("click", (event) => {
@@ -11,6 +21,7 @@ document.querySelectorAll(".color-button").forEach((button) => {
 function showSurprise(button, event) {
   titleEl.textContent = button.dataset.title;
   textEl.textContent = button.dataset.message;
+  playAnimalNoise(button.dataset.sound || "meow");
 
   const splat = document.createElement("div");
   splat.className = "paint-splat";
@@ -31,6 +42,35 @@ function showSurprise(button, event) {
   setTimeout(() => {
     splat.remove();
   }, 12000);
+}
+
+function playAnimalNoise(soundName) {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return;
+
+  if (!audioContext) {
+    audioContext = new AudioContextClass();
+  }
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  const pattern = soundPatterns[soundName] || soundPatterns.meow;
+  const now = audioContext.currentTime;
+  const masterGain = audioContext.createGain();
+  masterGain.gain.setValueAtTime(0.0001, now);
+  masterGain.gain.exponentialRampToValueAtTime(0.06, now + 0.01);
+  masterGain.gain.exponentialRampToValueAtTime(0.0001, now + pattern.duration + pattern.release);
+  masterGain.connect(audioContext.destination);
+
+  const oscillator = audioContext.createOscillator();
+  oscillator.type = pattern.type;
+  oscillator.frequency.setValueAtTime(pattern.start, now);
+  oscillator.frequency.exponentialRampToValueAtTime(pattern.end, now + pattern.duration);
+  oscillator.connect(masterGain);
+  oscillator.start(now);
+  oscillator.stop(now + pattern.duration + pattern.release);
 }
 
 function getButtonColor(button) {

@@ -47,17 +47,18 @@ function startBackgroundMusic() {
     clearInterval(melodyTimer);
   }
 
-  const melody = [440, 554, 659, 659, 554, 440, 392, 392];
-  const durations = [0.25, 0.25, 0.3, 0.3, 0.25, 0.25, 0.4, 0.4];
+  const melody = [392, 392, 440, 392, 523, 493, 392, 392, 440, 392, 466, 440];
+  const durations = [0.2, 0.2, 0.2, 0.2, 0.3, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.2];
 
   let step = 0;
   const playStep = () => {
-    playTone(melody[step % melody.length], durations[step % durations.length]);
+    const index = step % melody.length;
+    playTone(melody[index], durations[index]);
     step += 1;
   };
 
   playStep();
-  melodyTimer = setInterval(playStep, 300);
+  melodyTimer = setInterval(playStep, 220);
 }
 
 document.querySelectorAll(".color-button").forEach((button) => {
@@ -113,6 +114,3 @@ function getButtonColor(button) {
   }
 }
 
-document.querySelectorAll(".color-button").forEach((button) => {
-  button.addEventListener("click", (event) => showSurprise(button, event));
-});

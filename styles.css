@@ -16,8 +16,62 @@ body {
 }
 
 .page-shell {
+  position: relative;
   min-height: 100vh;
   padding: 24px;
+  overflow: hidden;
+}
+
+.paint-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.paint-splotch {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.8;
+  pointer-events: none;
+  animation: drift 8s ease-in-out infinite;
+}
+
+.splotch-one {
+  top: 8%;
+  left: 6%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle at 30% 30%, #f9a8d4, #fb7185 45%, #f43f5e 80%);
+}
+
+.splotch-two {
+  top: 16%;
+  right: 8%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle at 30% 30%, #bfdbfe, #60a5fa 45%, #2563eb 80%);
+  animation-duration: 10s;
+}
+
+.splotch-three {
+  bottom: 8%;
+  left: 20%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle at 40% 35%, #fde68a, #fbbf24 45%, #f59e0b 80%);
+  animation-duration: 7s;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(20px, -20px, 0) scale(1.08);
+  }
 }
 
 .hero {
@@ -126,37 +180,30 @@ h1 {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0;
+  overflow: hidden;
 }
 
-.surprise-burst::before,
-.surprise-burst::after {
-  content: "✨";
+.paint-splat {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 1.5rem;
-  transform: translate(-50%, -50%) scale(0.5);
-  animation: burst 0.7s ease-out forwards;
+  border-radius: 45% 55% 60% 40% / 50% 40% 60% 50%;
+  opacity: 0.85;
+  transform: scale(1);
+  filter: blur(0.2px);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
+  animation: float-splat 60s linear forwards;
 }
 
-.surprise-burst::after {
-  content: "🌈";
-  font-size: 1.2rem;
-  animation-delay: 0.1s;
-}
-
-@keyframes burst {
+@keyframes float-splat {
   0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0.85;
+    transform: scale(1) translate(0, 0);
   }
-  50% {
-    opacity: 1;
+  10% {
+    opacity: 0.95;
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.6) translateY(-30px);
+    transform: scale(1.2) translate(var(--drift-x, 80px), var(--drift-y, -120px));
   }
 }
 

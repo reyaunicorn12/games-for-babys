@@ -10,8 +10,8 @@ function showSurprise(button, event) {
   splat.className = "paint-splat";
 
   const size = 70 + Math.floor(Math.random() * 45);
-  const driftX = (Math.random() - 0.5) * 220;
-  const driftY = -(120 + Math.random() * 140);
+  const driftX = (Math.random() - 0.5) * 360;
+  const driftY = (Math.random() - 0.5) * 360;
   const layerRect = paintLayer.getBoundingClientRect();
   splat.style.left = `${event.clientX - layerRect.left - size / 2}px`;
   splat.style.top = `${event.clientY - layerRect.top - size / 2}px`;

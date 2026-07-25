@@ -1,17 +1,73 @@
 const titleEl = document.getElementById("message-title");
 const textEl = document.getElementById("message-text");
 const paintLayer = document.getElementById("paint-layer");
-const backgroundMusic = document.getElementById("background-music");
 
-function startBackgroundMusic() {
-  if (!backgroundMusic) return;
-  backgroundMusic.volume = 0.25;
-  backgroundMusic.play().catch(() => {
-    // Ignore autoplay restrictions in the browser.
-  });
+let audioContext;
+let masterGain;
+let melodyTimer;
+
+function ensureAudioContext() {
+  if (!audioContext) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioCtx();
+    masterGain = audioContext.createGain();
+    masterGain.gain.value = 0.05;
+    masterGain.connect(audioContext.destination);
+  }
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
 }
 
-window.addEventListener("load", startBackgroundMusic);
+function playTone(frequency, duration, volume = 0.06) {
+  if (!audioContext || !masterGain) return;
+
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+
+  oscillator.type = "sine";
+  oscillator.frequency.value = frequency;
+
+  gainNode.gain.setValueAtTime(0.0001, audioContext.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + 0.02);
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+
+  oscillator.connect(gainNode);
+  gainNode.connect(masterGain);
+
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + duration + 0.02);
+}
+
+function startBackgroundMusic() {
+  ensureAudioContext();
+
+  if (melodyTimer) {
+    clearInterval(melodyTimer);
+  }
+
+  const melody = [440, 554, 659, 659, 554, 440, 392, 392];
+  const durations = [0.25, 0.25, 0.3, 0.3, 0.25, 0.25, 0.4, 0.4];
+
+  let step = 0;
+  const playStep = () => {
+    playTone(melody[step % melody.length], durations[step % durations.length]);
+    step += 1;
+  };
+
+  playStep();
+  melodyTimer = setInterval(playStep, 300);
+}
+
+document.querySelectorAll(".color-button").forEach((button) => {
+  button.addEventListener("click", (event) => {
+    startBackgroundMusic();
+    showSurprise(button, event);
+  });
+});
+
+window.addEventListener("pointerdown", startBackgroundMusic, { once: true });
 
 function showSurprise(button, event) {
   titleEl.textContent = button.dataset.title;

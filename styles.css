@@ -1,0 +1,135 @@
+:root {
+  color-scheme: light;
+  --ink: #4c1d95;
+  --text: #2d1b69;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Comic Sans MS", sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, #fff7ed 0%, #ffe4f1 45%, #dbeafe 100%);
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.hero {
+  text-align: center;
+  padding: 20px 0 12px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--ink);
+}
+
+.hero-copy {
+  margin: 10px auto 0;
+  max-width: 640px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.button-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.color-button {
+  border: none;
+  border-radius: 24px;
+  padding: 18px 16px;
+  min-height: 120px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(76, 29, 149, 0.16);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.color-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(76, 29, 149, 0.22);
+}
+
+.pink {
+  background: linear-gradient(135deg, #fb7185, #f472b6);
+}
+
+.blue {
+  background: linear-gradient(135deg, #38bdf8, #2563eb);
+}
+
+.yellow {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.green {
+  background: linear-gradient(135deg, #34d399, #10b981);
+}
+
+.purple {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+}
+
+.orange {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+}
+
+.message-panel {
+  margin-top: 24px;
+  padding: 20px 24px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 36px rgba(76, 29, 149, 0.14);
+  text-align: center;
+}
+
+.message-panel h2 {
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.message-panel p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 14px;
+  }
+
+  .color-button {
+    min-height: 100px;
+  }
+}

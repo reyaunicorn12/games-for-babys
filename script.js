@@ -287,93 +287,92 @@ function addStoryEntry(entry) {
 
 function loadStoryBank() {
   const count = 10000;
-const adjectivePool = ["glittering", "merry", "whispering", "fuzzy", "cosmic", "sunlit", "sparkly", "moonlit", "jazzy", "curious"];
-    const placePool = ["the velvet forest", "a floating bakery", "the cloud castle", "the lantern market", "the singing sea", "the mirror meadow", "the comet canyon", "the rainbow library", "the candy comet", "the star harbor"];
-    const nounPool = ["princess", "fox", "dragon", "wizard", "pirate", "meteor", "clockmaker", "painter", "gardener", "knight"];
-    const actionPool = ["uncovered a secret map", "traded with stars", "outwitted a giggle goblin", "solved a moon riddle", "followed a glowing ribbon", "danced across a bridge", "rescued a sleepy lantern", "opened a pocket of thunder", "borrowed a comet tail", "snuck into a treasure garden"];
-    const setupPool = ["At the edge of dawn", "Under a sky stitched with lanterns", "When the wind carried a tiny melody", "As the moon polished the hills", "After the clouds had rolled away", "While the town bells rang backwards", "Right before the stars decided to wink", "During the hour when everything shimmered", "Just as a comet brushed the horizon", "After a thunderclap turned into laughter"];
-    const mysterySubjectPool = ["the missing moon muffin", "a vanished silver teacup", "the stolen rainbow ribbon", "a runaway brass clock", "the disappeared star map", "the missing velvet hat", "a hidden basket of blueberry pastries", "a snatched music box", "the borrowed moonstone key", "a clever prank that made everyone think the sky had changed color"];
-    const cluePool = ["a trail of cinnamon crumbs led to the library window", "the only footprints were tiny and perfectly polite", "a single ribbon of light curled around the fountain", "a clock chimed three times even though it was still morning", "the suspect had left behind a note written in glitter glue", "the key clue was a tiny bell that rang only when someone lied", "everyone swore they heard a laugh from the bakery chimney", "a spoon was found tucked inside a pocket watch", "the culprit had used a tiny paintbrush to leave sparkly marks on the floor", "the answer seemed hidden in the rhythm of the town bells"];
-    const suspectPool = ["a polite penguin with a tiny crown", "a sleepy dragon who only wanted a nap", "a clockmaker with glitter in their pockets", "a baker who smelled like cinnamon and secrets", "a gardener who knew every plant by song", "a pirate with a very dramatic hat", "a painter who loved riddles more than sleep", "a wizard who kept losing their keys", "a comet with excellent manners", "a knight who was surprisingly bad at keeping secrets"];
-    const solutionPool = ["the polite penguin had borrowed the moon muffin for a midnight picnic", "the sleepy dragon had hidden the teacup to keep it safe from the wind", "the clockmaker had taken the ribbon to fix a broken music box", "the baker had moved the clock because the bells were too loud", "the gardener had tucked away the star map to protect it from the rain", "the pirate had stolen the hat because it matched their ship's flag", "the painter had taken the pastries to use as color inspiration", "the wizard had hidden the music box to test everyone's detective skills", "the comet had borrowed the moonstone key to open a secret workshop", "the knight had staged the prank because they wanted everyone to laugh at the absurdity of it all"];
+  const adjectivePool = ["glittering", "elegant", "shadowed", "velvet", "silver", "crimson", "faded", "gilded", "midnight", "polished"];
+  const placePool = ["the moonlit manor", "the royal gallery", "the velvet opera house", "the marble conservatory", "the winter ballroom", "the old clock tower", "the diamond vault", "the seaside estate", "the private auction house", "the grand museum"];
+  const nounPool = ["detective", "investigator", "curator", "butler", "housekeeper", "journalist", "guard", "secretary", "footman", "cousin"];
+  const actionPool = ["discovered the theft", "tracked the missing jewel", "followed the false alibi", "questioned the guests", "followed the hidden trail", "studied the evidence", "interviewed the staff", "examined the crime scene", "crossed the locked hall", "uncovered the motive"];
+  const setupPool = ["At the first light of morning", "In the hush before the guests arrived", "During the charity gala", "Just after the lights were dimmed", "At the height of the evening reception", "Before the orchestra began to play", "After the last carriage had rolled away", "When the house was at its quietest", "Right after the jewel case was opened", "As the clock struck midnight"];
+  const mysterySubjectPool = ["the stolen diamond", "the missing ruby necklace", "the vanished sapphire brooch", "the stolen pearl bracelet", "the missing emerald ring", "the snatched gold watch", "the stolen moonstone pendant", "the missing velvet jewel case", "the vanished diamond tiara", "the stolen royal sapphire"];
+  const cluePool = ["a trail of muddy footprints led from the ballroom to the conservatory", "the only fingerprints were smudged with powder and perfume", "a broken glass shard glittered beneath the chandelier", "a torn velvet ribbon was caught on the garden gate", "a single candle had burned down to the wax in a strange pattern", "the key clue was a tiny diamond chip found in the carpet", "a silver letter opener was missing from the study", "the suspect had left a faint scent of lavender and smoke", "the culprit had used a silk glove to avoid leaving a clear print", "the answer seemed hidden in the timing of the clock strikes"];
+  const suspectPool = ["a jealous cousin with a sharp tongue", "a disgraced jewel keeper with a nervous smile", "a famous actress who had been seen leaving the gallery", "a royal butler who knew every hallway by heart", "a charming magician with a pocket full of tricks", "a handsome thief with a polished accent", "a housemaid who knew the manor's secrets", "a rival collector with a grudge", "a tailor who mended the victim's gowns", "a footman who had access to the locked study"];
+  const solutionPool = ["the jealous cousin had stolen the diamond to force a family scandal", "the jewel keeper had hidden the ruby necklace in the conservatory wall", "the actress had taken the sapphire brooch to sell it to a private buyer", "the butler had removed the pearl bracelet to protect the family from ruin", "the magician had borrowed the emerald ring for a trick and never returned it", "the thief had hidden the gold watch in the clock tower and planned to collect it that night", "the tailor had tucked the moonstone pendant inside a lining for later sale", "the rival collector had switched the jewel case to frame the staff", "the footman had taken the diamond tiara because he believed it belonged to his late mother", "the housemaid had stolen the royal sapphire to pay off a gambling debt"];
+  const scenePool = ["the chandelier trembled", "the conservatory door stood open", "the clock on the mantel had stopped", "the garden gate was still swinging", "the rug had been rolled back", "the servant bell had been rung twice", "the portrait frame was crooked", "the candle wax had dripped onto the floor", "the ash tray held a single cigar stub", "the jewel case had been opened with a silver key"];
+  const redHerringPool = ["a nervous singer claimed the thief was a phantom", "a valet swore the culprit wore no shoes", "a maid insisted the culprit had left through the chapel", "a violinist argued the evidence was planted", "a guest spoke of a masked stranger in green", "a coachman said the thief had ridden away on a black horse", "a chef pointed to a soup stain as proof", "a painter insisted the crime was an act of revenge", "a child claimed they saw a ghost in the corridor", "an accountant suspected sabotage by the bank"];
+  const revealPool = ["the missing jewel had been hidden in a false panel", "the culprit had used a family heirloom to disguise the theft", "the real motive was ambition, not greed", "the lock had been picked with a hairpin and patience", "the suspect's glove had caught on the gate", "the truth was revealed by a clock chime and a stain of blue wax", "the jewel had been moved to a sealed music box", "the staff's alibis fell apart once one detail was checked", "the stolen piece had been taken to a waiting carriage", "the culprit had left the answer in a letter tucked inside a book"];
 
   state.storyBank = [];
-  for (let index = 0; index < count; index += 1) {
-    const adjective = adjectivePool[index % adjectivePool.length];
-    const place = placePool[(index * 3) % placePool.length];
-    const noun = nounPool[(index * 5) % nounPool.length];
-    const action = actionPool[(index * 7) % actionPool.length];
-    const setup = setupPool[(index * 13) % setupPool.length];
-    const mysterySubject = mysterySubjectPool[(index * 7) % mysterySubjectPool.length];
-    const clue = cluePool[(index * 3) % cluePool.length];
-    const clueTwo = cluePool[(index * 5) % cluePool.length];
-    const suspect = suspectPool[(index * 9) % suspectPool.length];
-    const solution = solutionPool[(index * 13) % solutionPool.length];
-    const title = `Mystery of the ${adjective} ${noun}`;
+  const seenStories = new Set();
+
+  for (let index = 0; state.storyBank.length < count && index < count * 4; index += 1) {
+    const seed = index * 37 + 11;
+    const adjective = adjectivePool[seed % adjectivePool.length];
+    const place = placePool[(seed * 3) % placePool.length];
+    const noun = nounPool[(seed * 5) % nounPool.length];
+    const action = actionPool[(seed * 7) % actionPool.length];
+    const setup = setupPool[(seed * 13) % setupPool.length];
+    const mysterySubject = mysterySubjectPool[(seed * 7) % mysterySubjectPool.length];
+    const clue = cluePool[(seed * 3) % cluePool.length];
+    const clueTwo = cluePool[(seed * 5) % cluePool.length];
+    const suspect = suspectPool[(seed * 9) % suspectPool.length];
+    const solution = solutionPool[(seed * 13) % solutionPool.length];
+    const scene = scenePool[(seed * 17) % scenePool.length];
+    const redHerring = redHerringPool[(seed * 19) % redHerringPool.length];
+    const reveal = revealPool[(seed * 23) % revealPool.length];
+    const title = `The Case of ${mysterySubject.replace(/^the (?:stolen|missing|vanished|snatched) /, "")}`;
+    const storySignature = `${title}|${mysterySubject}|${clue}|${clueTwo}|${suspect}|${solution}|${scene}`;
+
+    if (seenStories.has(storySignature)) {
+      continue;
+    }
+    seenStories.add(storySignature);
+
     const paragraphs = [];
     paragraphs.push(`${setup}, a ${adjective} ${noun} ${action} ${place}.`);
-    paragraphs.push(`The air around them shimmered like a promise, but the mood shifted when ${mysterySubject} vanished without a trace.`);
+    paragraphs.push(`The evening took a darker turn when ${mysterySubject} vanished from its locked case and the house fell silent.`);
     paragraphs.push(`The first clue was ${clue}.`);
-    paragraphs.push(`The second clue was ${clueTwo}, and suddenly the ${noun} realized this was no ordinary puzzle.`);
+    paragraphs.push(`The second clue was ${clueTwo}, and suddenly the ${noun} realized this was no ordinary theft but a carefully staged crime.`);
 
-    for (let paragraphIndex = 4; paragraphIndex < 59; paragraphIndex += 1) {
-      const flavor = [
-        `The ${noun} checked the corners of ${place} and found a tiny note tucked under a flowerpot, but the writing was too glittery to read at first.`,
-        `Every witness had a different story, and every story sounded suspiciously sincere, which made the case even more delicious.`,
-        `The ${noun} followed the trail of light toward a sleepy bench where a single bell sat waiting like a patient witness.`,
-        `A small crowd gathered, and each person had an alibi that sounded perfectly sensible until the next person spoke.`,
-        `The sky above ${place} seemed to hold its breath while the ${noun} weighed the clues against the obvious nonsense.`,
-        `A tiny puddle of blue paint near the fountain suggested someone had been hurrying, but not necessarily in a guilty way.`,
-        `The ${noun} noticed that the suspect's footprints were neat, tidy, and oddly dramatic, which felt important in the most suspicious way.`,
-        `The case seemed to be growing not smaller but stranger, and the ${noun} loved that.`,
-        `A ribbon of moonlight pointed toward a locked gate, and the lock had been opened with something clever rather than forceful.`,
-        `The ${noun} began to suspect that the missing object was not the real target at all; the real target was the truth.`,
-        `A whisper from the wind suggested the culprit might be ${suspect}, but that was only a hint and not the whole answer.`,
-        `The ${noun} searched the market stalls, the garden beds, and the library shelves, hoping one clue would finally make sense.`,
-        `A trail of glitter led to a bakery window, where someone had left behind a crumb and a very confident smile.`,
-        `The case was full of red herrings, but the ${noun} was so delighted by the nonsense that the puzzle felt like a game.`,
-        `The ${noun} remembered that the missing thing had been taken in a hurry, which meant the culprit had been trying not to be noticed.`,
-        `At the top of a hill, the ${noun} found a tiny brass key that clicked against a pocket watch and made everything feel much more suspicious.`,
-        `The town bells rang again, and this time the rhythm seemed to spell out a pattern if only the ${noun} listened carefully.`,
-        `A very polite goose waddled by wearing a ribbon that matched the color of the missing object, which made the ${noun} pause.`,
-        `The ${noun} realized the clues were not random; they were arranged with a kind of theatrical logic.`,
-        `The trail led to the fountain, where the water shimmered in a way that made the ${noun} think of mirrors and secrets.`,
-        `The ${noun} found a second note hidden inside a teacup, and this one was clearer, sharper, and far more smug.`,
-        `Every clue seemed to point in a different direction, but the ${noun} could feel the right path waiting just beneath the confusion.`,
-        `The case demanded patience, so the ${noun} sat still for a moment and listened to the sounds of ${place}.`,
-        `A tiny laugh echoed from the bakery chimney, and suddenly the puzzle felt delightfully ridiculous.`,
-        `The ${noun} turned over a flowerpot and discovered a scrap of paper covered in sparkles and one very helpful date.`,
-        `The clues began to fit together like a puzzle box, and the ${noun} could almost hear the solution clicking into place.`,
-        `A suspiciously neat stack of pastries sat beside the fountain, as if someone had been preparing for an apology.`,
-        `The ${noun} followed the smell of cinnamon to a hidden door that had been left open just enough for a clever person to notice.`,
-        `The room beyond the door was full of hats, clocks, candy wrappers, and one very important clue tucked under a teacup.`,
-        `The ${noun} could now see that the case was less about theft and more about timing, mood, and a very specific kind of nonsense.`,
-        `A second look at the bell suggested it had been rung by someone trying to draw attention away from the real evidence.`,
-        `The ${noun} smiled because the mystery had become less scary and more charming, which was a very good sign.`,
-        `A painted star on the wall pointed toward a shelf of old books and one hidden compartment full of clues.`,
-        `The ${noun} discovered that the missing object had been moved by someone who wanted to be admired for their cleverness.`,
-        `The case sharpened when the ${noun} noticed that the culprit's motive was not greed but a strange and very sincere idea.`,
-        `A final trail of glitter led to a tiny balcony where a single shoeprint waited beside a lantern.`,
-        `The ${noun} stood there for a long moment and realized the answer had been in plain sight all along.`,
-        `The puzzle was solved not by force but by noticing which clue felt most like a joke and which one felt most like a truth.`,
-        `The ${noun} felt triumphant, not because the mystery had been easy, but because it had been fun.`,
-        `The final scene of the case felt almost theatrical, as if the whole town had been rehearsing for this exact reveal.`,
-        `The ${noun} looked at the evidence one last time and understood that the mystery had been waiting for a careful mind.`,
-        `A soft laugh rose from somewhere nearby, and the ${noun} knew the story was not over yet but the answer was close.`,
-        `The truth was hidden in the smallest detail, and the ${noun} had found it by paying attention.`,
-        `The investigation ended with a grin, a little sparkle, and the satisfying sense that the puzzle had been solved.`,
-        `The ${noun} closed the case with a happy sigh, knowing that the answer had been clever, silly, and exactly right.`,
-        `Every clue had been a breadcrumb, every red herring a distraction, and every detail a piece of the same delightful puzzle.`,
-        `The mystery was solved, and the ${noun} walked away feeling brave, curious, and just a little bit brilliant.`,
-        `The town seemed brighter after the truth was out, as if solving the puzzle had lit the whole place from within.`,
-        `What had seemed like nonsense at first now looked like an elegant little secret, beautifully arranged for someone to discover.`,
-        `And just when the ${noun} thought the last clue had been followed, a final spark of light whispered that maybe the best mysteries always leave a tiny smile behind.`,
-        `The case had been full of surprises, but the final answer was simple once you knew where to look.`,
-        `The ${noun} tucked the lesson away in their mind: the best mysteries are solved with patience, curiosity, and a willingness to laugh.`,
-        `The story of the case ended not with fear but with delight, because every clue had been a doorway to something brighter.`,
-        `The mystery had been solved, and the ${noun} felt proud of the way they had followed the clues to the very end.`
-      ][paragraphIndex - 4];
-      paragraphs.push(flavor);
+    const paragraphTemplates = [
+      ({ noun, place, scene }) => `The ${noun} examined ${place} with a steady hand, noticing that ${scene}.`,
+      ({ noun, clue }) => `Every glance returned to ${clue}, until even the smallest detail seemed suspicious.`,
+      ({ noun, suspect }) => `A whisper reached the ${noun} that ${suspect} had been seen near the locked door.`,
+      ({ noun, redHerring }) => `The trail was crowded with nonsense, including ${redHerring}.`,
+      ({ noun, place }) => `The ${noun} crossed the corridors of ${place} and found a second set of footprints that did not match the first.`,
+      ({ noun, reveal }) => `The turning point came when the ${noun} understood that ${reveal}.`,
+      ({ noun, suspect }) => `The ${noun} began to see that ${suspect} had the best access and the weakest alibi.`,
+      ({ noun, place }) => `At the edge of ${place}, the ${noun} noticed a final detail that had been overlooked by every other witness.`,
+      ({ noun }) => `The ${noun} kept calm, because the best cases are rarely solved by panic.`,
+      ({ noun }) => `The case grew more intricate with each step, but the ${noun} welcomed the challenge.`,
+      ({ noun, clueTwo }) => `The evidence pointed toward ${clueTwo}, which felt too neat to be accidental.`,
+      ({ noun }) => `The ${noun} learned that a jewel thief usually leaves behind a motive as well as a method.`,
+      ({ noun }) => `A single unguarded key and a quiet room were enough to change the whole direction of the inquiry.`,
+      ({ noun }) => `The ${noun} returned to the beginning of the mystery, where the obvious answer had been hiding in plain sight.`,
+      ({ noun }) => `The matter was no longer a simple theft; it had become a question of pride, jealousy, and timing.`,
+      ({ noun }) => `The ${noun} noticed that the culprit had been clever enough to leave a clue in a place meant to be overlooked.`,
+      ({ noun }) => `The case sharpened when the ${noun} realized that a false confession could be more useful than a true one.`,
+      ({ noun }) => `The ${noun} made one more pass through the scene and discovered the trace that had been missing all evening.`,
+      ({ noun }) => `The house seemed to breathe again once the ${noun} had a clear theory in mind.`,
+      ({ noun }) => `The final question was not who had the chance, but who had the nerve.`,
+      ({ noun }) => `The ${noun} found the answer by comparing the smallest details rather than the loudest stories.`,
+      ({ noun }) => `Every whisper in the house seemed to point toward the same hidden truth.`,
+      ({ noun }) => `The ${noun} understood that the theft had been arranged to look accidental, and that was the trick.`,
+      ({ noun }) => `The room was quiet, but the ${noun} could feel the tension rising with every passing minute.`,
+      ({ noun }) => `The evidence was scattered, yet the pattern in it felt deliberate from the start.`,
+      ({ noun }) => `The ${noun} knew the culprit would have made at least one mistake, and that mistake was waiting.`,
+      ({ noun }) => `The case seemed ordinary at first, until the ${noun} noticed how carefully every detail had been staged.`,
+      ({ noun }) => `The puzzle was less about the jewel itself and more about the person who wanted it hidden.`,
+      ({ noun }) => `The ${noun} looked at the victim's account and found a contradiction small enough to be ignored.`,
+      ({ noun }) => `A single thread of silk was enough to turn the evening from a rumor into a theory.`,
+      ({ noun }) => `The ${noun} followed the trail to a locked drawer and a final letter that changed everything.`,
+      ({ noun }) => `The case had become personal by the time the ${noun} recognized the motive behind the theft.`,
+      ({ noun }) => `Even the servants seemed to hold their breath when the ${noun} reached the truth.`,
+      ({ noun }) => `The final clue did not shout; it simply waited to be noticed.`,
+      ({ noun }) => `The ${noun} traced the movement of the jewel through the house and ended at the one place no one had checked.`
+    ];
+
+    for (let paragraphIndex = 4; paragraphIndex < 60; paragraphIndex += 1) {
+      const template = paragraphTemplates[(seed + paragraphIndex * 7) % paragraphTemplates.length];
+      paragraphs.push(template({ noun, place, suspect, clue, clueTwo, redHerring, reveal, scene }));
     }
 
     paragraphs.push(`The final answer was ${solution}, and the ${noun} realized the truth had been hiding in plain sight all along.`);

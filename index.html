@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Little Hands Button Party</title>
+    <title>Unboardinator Adventure</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -12,26 +12,97 @@
       <div class="paint-splotch splotch-one" aria-hidden="true"></div>
       <div class="paint-splotch splotch-two" aria-hidden="true"></div>
       <div class="paint-splotch splotch-three" aria-hidden="true"></div>
+
       <header class="hero">
-        <p class="eyebrow">Big bright buttons</p>
-        <h1>Little Hands Button Party</h1>
+        <p class="eyebrow">Ultra-bright button madness</p>
+        <h1>UNBOARDINATOR</h1>
         <p class="hero-copy">
-          Tap the colorful buttons and enjoy a cheerful little surprise each time.
+          A neon playground packed with stories, mini-games, and surprise power-ups.
         </p>
       </header>
 
+      <section class="stats-panel" aria-label="Game stats">
+        <div class="stat-card">
+          <span>Score</span>
+          <strong id="score-value">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Story Stage</span>
+          <strong id="stage-value">1</strong>
+        </div>
+        <div class="stat-card">
+          <span>Adventure Bits</span>
+          <strong id="bits-value">0</strong>
+        </div>
+      </section>
+
       <main class="content">
+        <section class="story-panel" aria-labelledby="story-title">
+          <p class="panel-kicker">Adventure story</p>
+          <h2 id="story-title">The Moonlight Map</h2>
+          <p id="story-text">
+            The city of Glimmer is waking up, and a tiny comet has dropped a glowing map into your hands.
+          </p>
+          <div class="choice-row">
+            <button class="story-choice" type="button" data-next="1" data-reward="Spark Shard" data-note="You followed the glittering trail.">
+              Follow the sparkling trail
+            </button>
+            <button class="story-choice" type="button" data-next="2" data-reward="Rainbow Key" data-note="You dove into the tunnel of color.">
+              Enter the rainbow tunnel
+            </button>
+            <button class="story-choice" type="button" data-next="3" data-reward="Comet Whistle" data-note="You asked the comet for help.">
+              Ask the comet for guidance
+            </button>
+          </div>
+          <div class="story-footer">
+            <ul id="story-log" class="story-log"></ul>
+            <ul id="inventory-list" class="inventory-list"></ul>
+          </div>
+        </section>
+
         <section class="button-board" aria-label="Colorful buttons">
-          <button class="color-button pink" data-title="Sunny Sun" data-message="You pressed the sunny button!" data-sound="meow">☀️ Sunny</button>
-          <button class="color-button blue" data-title="Bouncy Blue" data-message="You pressed the blue button!" data-sound="quack">💧 Blue</button>
-          <button class="color-button yellow" data-title="Happy Yellow" data-message="You pressed the yellow button!" data-sound="moo">🌼 Yellow</button>
-          <button class="color-button green" data-title="Green Glow" data-message="You pressed the green button!" data-sound="oink">🌿 Green</button>
-          <button class="color-button purple" data-title="Purple Party" data-message="You pressed the purple button!" data-sound="baa">🪄 Purple</button>
-          <button class="color-button orange" data-title="Sparkly Orange" data-message="You pressed the orange button!" data-sound="woof">✨ Orange</button>
+          <button class="color-button pink" data-title="Hot Pink Blast" data-message="You activated the neon sparkle!" data-sound="meow">💥 Blaze</button>
+          <button class="color-button blue" data-title="Ocean Zoom" data-message="You launched a blue wave!" data-sound="quack">🌊 Wave</button>
+          <button class="color-button yellow" data-title="Sunbeam Pop" data-message="You woke the sunshine!" data-sound="moo">☀️ Glow</button>
+          <button class="color-button green" data-title="Mega Green" data-message="You sent the jungle wild!" data-sound="oink">🌿 Jungle</button>
+          <button class="color-button purple" data-title="Purple Power" data-message="You summoned a magical burst!" data-sound="baa">🪄 Magic</button>
+          <button class="color-button orange" data-title="Firework Flick" data-message="You lit up the room!" data-sound="woof">✨ Spark</button>
+        </section>
+
+        <section class="game-grid">
+          <article class="game-card">
+            <p class="card-label">Mini-game</p>
+            <h3>Star Catch Challenge</h3>
+            <p>Tap the star as it hops around the arena and rack up bonus points.</p>
+            <div id="star-zone" class="star-zone">
+              <button id="star-target" class="star-target" type="button">⭐</button>
+            </div>
+            <div class="game-footer">
+              <span id="star-status">Press start to begin.</span>
+              <button id="star-start" class="game-button" type="button">Start star hunt</button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <p class="card-label">Mini-game</p>
+            <h3>Glow Trail</h3>
+            <p>Watch the glowing pattern and replay it to earn a big boost.</p>
+            <div class="trail-buttons">
+              <button class="trail-button pink" data-id="0" type="button">1</button>
+              <button class="trail-button blue" data-id="1" type="button">2</button>
+              <button class="trail-button green" data-id="2" type="button">3</button>
+              <button class="trail-button purple" data-id="3" type="button">4</button>
+            </div>
+            <div class="game-footer">
+              <span id="trail-status">Tap start to play.</span>
+              <button id="trail-start" class="game-button" type="button">Start glow trail</button>
+            </div>
+          </article>
         </section>
 
         <section class="message-panel" aria-live="polite">
           <div id="surprise-burst" class="surprise-burst" aria-hidden="true"></div>
+          <p class="panel-kicker">Current vibe</p>
           <h2 id="message-title">Pick a bright button</h2>
           <p id="message-text">Tap one and watch the fun appear.</p>
         </section>

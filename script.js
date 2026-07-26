@@ -1,6 +1,18 @@
 const titleEl = document.getElementById("message-title");
 const textEl = document.getElementById("message-text");
 const paintLayer = document.getElementById("paint-layer");
+const scoreValueEl = document.getElementById("score-value");
+const stageValueEl = document.getElementById("stage-value");
+const bitsValueEl = document.getElementById("bits-value");
+const storyTitleEl = document.getElementById("story-title");
+const storyTextEl = document.getElementById("story-text");
+const storyLogEl = document.getElementById("story-log");
+const inventoryListEl = document.getElementById("inventory-list");
+const starZoneEl = document.getElementById("star-zone");
+const starTargetEl = document.getElementById("star-target");
+const starStatusEl = document.getElementById("star-status");
+const trailStatusEl = document.getElementById("trail-status");
+const trailButtons = Array.from(document.querySelectorAll(".trail-button"));
 let audioContext;
 
 const soundPatterns = {
@@ -12,36 +24,312 @@ const soundPatterns = {
   woof: { type: "sine", start: 160, end: 95, duration: 0.18, release: 0.12 }
 };
 
+const state = {
+  score: 0,
+  stage: 0,
+  bits: 0,
+  inventory: [],
+  storyLog: [],
+  starGameActive: false,
+  starHits: 0,
+  trailPattern: [],
+  trailPlayer: [],
+  trailActive: false,
+  starIntervalId: null
+};
+
+const storyStates = [
+  {
+    title: "The Moonlight Map",
+    text: "The city of Glimmer is waking up, and a tiny comet has dropped a glowing map into your hands.",
+    choices: [
+      { label: "Follow the sparkling trail", next: 1, reward: "Spark Shard", note: "You followed the glittering path." },
+      { label: "Enter the rainbow tunnel", next: 2, reward: "Rainbow Key", note: "You dove into the tunnel of color." },
+      { label: "Ask the comet for guidance", next: 3, reward: "Comet Whistle", note: "You asked the comet for help." }
+    ]
+  },
+  {
+    title: "Spark Path",
+    text: "The trail blooms into a glowing river of stars. You have found a safe place to gather strength.",
+    choices: [
+      { label: "Collect stardust", next: 4, reward: "Stardust", note: "A pocket of stardust sparkled in your hand." },
+      { label: "Open the secret door", next: 4, reward: "Moonstone", note: "You opened a hidden door with a shining glow." }
+    ]
+  },
+  {
+    title: "Rainbow Tunnel",
+    text: "The tunnel sings with every color you touch, and a floating lantern begins to orbit you.",
+    choices: [
+      { label: "Chase the lantern", next: 4, reward: "Lantern Glow", note: "The lantern lit your way through the tunnel." },
+      { label: "Leap to the next bridge", next: 4, reward: "Sky Ribbon", note: "You bounced across a bright ribbon of light." }
+    ]
+  },
+  {
+    title: "Comet's Compass",
+    text: "The comet flutters overhead and points you toward the final celebration chamber.",
+    choices: [
+      { label: "Head to the celebration chamber", next: 4, reward: "Victory Badge", note: "You reached the grand finale chamber." },
+      { label: "Take a quick detour", next: 4, reward: "Bonus Star", note: "You found an extra star on the way." }
+    ]
+  },
+  {
+    title: "The Bright Finale",
+    text: "The whole playground is glowing with your discoveries. Every button, game, and story beat has become part of your adventure.",
+    choices: []
+  }
+];
+
 document.querySelectorAll(".color-button").forEach((button) => {
   button.addEventListener("click", (event) => {
     showSurprise(button, event);
   });
 });
 
+document.querySelectorAll(".story-choice").forEach((button) => {
+  button.addEventListener("click", () => {
+    handleStoryChoice(button);
+  });
+});
+
+document.getElementById("star-start").addEventListener("click", startStarGame);
+document.getElementById("trail-start").addEventListener("click", startTrailGame);
+
+trailButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    handleTrailButton(button);
+  });
+});
+
+updateStats();
+renderInventory();
+renderStoryLog();
+setStoryState(0);
+
 function showSurprise(button, event) {
   titleEl.textContent = button.dataset.title;
   textEl.textContent = button.dataset.message;
+  addScore(8);
+  addBits(1);
+  addStoryEntry(`You pressed ${button.textContent.trim()} and sent out a burst of color.`);
   playAnimalNoise(button.dataset.sound || "meow");
 
-  const splat = document.createElement("div");
-  splat.className = "paint-splat";
-
-  const size = 70 + Math.floor(Math.random() * 45);
-  const driftX = (Math.random() - 0.5) * 700;
-  const driftY = (Math.random() - 0.5) * 700;
+  const burstCount = 6;
   const layerRect = paintLayer.getBoundingClientRect();
-  splat.style.left = `${event.clientX - layerRect.left - size / 2}px`;
-  splat.style.top = `${event.clientY - layerRect.top - size / 2}px`;
-  splat.style.width = `${size}px`;
-  splat.style.height = `${size}px`;
-  splat.style.background = getButtonColor(button);
-  splat.style.setProperty("--drift-x", `${driftX}px`);
-  splat.style.setProperty("--drift-y", `${driftY}px`);
-  paintLayer.appendChild(splat);
+  const clickX = event.clientX || window.innerWidth / 2;
+  const clickY = event.clientY || window.innerHeight / 2;
 
+  for (let index = 0; index < burstCount; index += 1) {
+    const splat = document.createElement("div");
+    splat.className = "paint-splat";
+
+    const size = 60 + Math.floor(Math.random() * 50);
+    const driftX = (Math.random() - 0.5) * 720;
+    const driftY = (Math.random() - 0.5) * 720;
+
+    splat.style.left = `${clickX - layerRect.left - size / 2}px`;
+    splat.style.top = `${clickY - layerRect.top - size / 2}px`;
+    splat.style.width = `${size}px`;
+    splat.style.height = `${size}px`;
+    splat.style.background = getButtonColor(button);
+    splat.style.setProperty("--drift-x", `${driftX}px`);
+    splat.style.setProperty("--drift-y", `${driftY}px`);
+    splat.style.setProperty("--rotate", `${Math.random() * 360}deg`);
+    paintLayer.appendChild(splat);
+
+    setTimeout(() => {
+      splat.remove();
+    }, 1400);
+  }
+}
+
+function handleStoryChoice(button) {
+  const next = Number(button.dataset.next);
+  const reward = button.dataset.reward;
+  const note = button.dataset.note;
+
+  if (reward) {
+    addInventory(reward);
+  }
+
+  addScore(12);
+  addBits(2);
+  addStoryEntry(`Choice: ${button.textContent.trim()} — ${note}`);
+  setStoryState(next);
+}
+
+function setStoryState(nextIndex) {
+  state.stage = nextIndex;
+  const story = storyStates[nextIndex];
+  if (!story) return;
+
+  storyTitleEl.textContent = story.title;
+  storyTextEl.textContent = story.text;
+  stageValueEl.textContent = String(nextIndex + 1);
+
+  document.querySelectorAll(".story-choice").forEach((choiceButton, index) => {
+    const choice = story.choices[index];
+    if (choice) {
+      choiceButton.style.display = "inline-flex";
+      choiceButton.textContent = choice.label;
+      choiceButton.dataset.next = String(choice.next);
+      choiceButton.dataset.reward = choice.reward;
+      choiceButton.dataset.note = choice.note;
+    } else {
+      choiceButton.style.display = "none";
+    }
+  });
+}
+
+function addScore(amount) {
+  state.score += amount;
+  updateStats();
+}
+
+function addBits(amount) {
+  state.bits += amount;
+  updateStats();
+}
+
+function addInventory(item) {
+  if (!state.inventory.includes(item)) {
+    state.inventory.push(item);
+    renderInventory();
+  }
+}
+
+function addStoryEntry(entry) {
+  state.storyLog.unshift(entry);
+  state.storyLog = state.storyLog.slice(0, 6);
+  renderStoryLog();
+}
+
+function renderInventory() {
+  inventoryListEl.innerHTML = "";
+  if (!state.inventory.length) {
+    const emptyItem = document.createElement("li");
+    emptyItem.textContent = "No treasures yet — keep playing!";
+    inventoryListEl.appendChild(emptyItem);
+    return;
+  }
+
+  state.inventory.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = item;
+    inventoryListEl.appendChild(listItem);
+  });
+}
+
+function renderStoryLog() {
+  storyLogEl.innerHTML = "";
+  if (!state.storyLog.length) {
+    const emptyItem = document.createElement("li");
+    emptyItem.textContent = "Your adventure log is empty.";
+    storyLogEl.appendChild(emptyItem);
+    return;
+  }
+
+  state.storyLog.forEach((entry) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = entry;
+    storyLogEl.appendChild(listItem);
+  });
+}
+
+function updateStats() {
+  scoreValueEl.textContent = String(state.score);
+  bitsValueEl.textContent = String(state.bits);
+}
+
+function startStarGame() {
+  if (state.starGameActive) return;
+  state.starGameActive = true;
+  state.starHits = 0;
+  clearInterval(state.starIntervalId);
+  starStatusEl.textContent = "Catch 3 stars!";
+  placeStarTarget();
+  state.starIntervalId = window.setInterval(() => {
+    state.starHits = 0;
+    starStatusEl.textContent = "You missed one! Try again.";
+    placeStarTarget();
+  }, 1000);
+}
+
+function placeStarTarget() {
+  const zoneRect = starZoneEl.getBoundingClientRect();
+  const x = 20 + Math.random() * Math.max(zoneRect.width - 84, 20);
+  const y = 20 + Math.random() * Math.max(zoneRect.height - 84, 20);
+  starTargetEl.style.left = `${x}px`;
+  starTargetEl.style.top = `${y}px`;
+}
+
+starTargetEl.addEventListener("click", () => {
+  if (!state.starGameActive) return;
+  state.starHits += 1;
+  addScore(10);
+  addBits(1);
+  addStoryEntry("You caught a bright star and felt the arena pulse.");
+  starStatusEl.textContent = `Caught ${state.starHits}/3 stars`;
+  placeStarTarget();
+
+  if (state.starHits >= 3) {
+    clearInterval(state.starIntervalId);
+    state.starGameActive = false;
+    addInventory("Star Badge");
+    starStatusEl.textContent = "Perfect catch!";
+  }
+});
+
+function startTrailGame() {
+  state.trailPattern = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), Math.floor(Math.random() * 4)];
+  state.trailPlayer = [];
+  state.trailActive = false;
+  trailStatusEl.textContent = "Watch the pattern...";
+  flashTrailSequence(0);
+}
+
+function flashTrailSequence(index) {
+  if (index >= state.trailPattern.length) {
+    state.trailActive = true;
+    trailStatusEl.textContent = "Your turn!";
+    return;
+  }
+
+  const button = trailButtons[state.trailPattern[index]];
+  button.classList.add("active");
   setTimeout(() => {
-    splat.remove();
-  }, 12000);
+    button.classList.remove("active");
+    setTimeout(() => {
+      flashTrailSequence(index + 1);
+    }, 220);
+  }, 500);
+}
+
+function handleTrailButton(button) {
+  if (!state.trailActive) return;
+
+  const id = Number(button.dataset.id);
+  state.trailPlayer.push(id);
+  button.classList.add("active");
+  setTimeout(() => button.classList.remove("active"), 220);
+
+  const expected = state.trailPattern[state.trailPlayer.length - 1];
+  if (id !== expected) {
+    trailStatusEl.textContent = "Oops! Try the pattern again.";
+    state.trailActive = false;
+    addScore(-6);
+    setTimeout(startTrailGame, 900);
+    return;
+  }
+
+  if (state.trailPlayer.length === state.trailPattern.length) {
+    trailStatusEl.textContent = "Perfect glow!";
+    state.trailActive = false;
+    addScore(20);
+    addBits(3);
+    addInventory("Glow Glyph");
+    addStoryEntry("You replayed the trail and unlocked a glowing glyph.");
+    setTimeout(startTrailGame, 1200);
+  }
 }
 
 function playAnimalNoise(soundName) {

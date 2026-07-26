@@ -17,6 +17,10 @@ const bossStatusEl = document.getElementById("boss-status");
 const bossHealthEl = document.getElementById("boss-health");
 const storybookFeedEl = document.getElementById("storybook-feed");
 const storyCountEl = document.getElementById("story-count");
+const storyModalEl = document.getElementById("story-modal");
+const storyModalTitleEl = document.getElementById("story-modal-title");
+const storyModalBodyEl = document.getElementById("story-modal-body");
+const closeStoryModalButton = document.getElementById("close-story-modal");
 const trailButtons = Array.from(document.querySelectorAll(".trail-button"));
 const treasureCells = Array.from(document.querySelectorAll(".treasure-cell"));
 let audioContext;
@@ -153,6 +157,17 @@ document.getElementById("treasure-start").addEventListener("click", startTreasur
 document.getElementById("boss-start").addEventListener("click", startBossBattle);
 document.getElementById("boss-button").addEventListener("click", hitBoss);
 document.getElementById("load-stories").addEventListener("click", loadStoryBank);
+closeStoryModalButton.addEventListener("click", closeStoryModal);
+storyModalEl.addEventListener("click", (event) => {
+  if (event.target === storyModalEl) {
+    closeStoryModal();
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeStoryModal();
+  }
+});
 
 trailButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -272,12 +287,15 @@ function addStoryEntry(entry) {
 
 function loadStoryBank() {
   const count = 10000;
-  const adjectivePool = ["glittering", "merry", "whispering", "fuzzy", "cosmic", "sunlit", "stormy", "sparkly", "moonlit", "jazzy"];
-  const placePool = ["the velvet forest", "a floating bakery", "the cloud castle", "the lantern market", "the singing sea", "the mirror meadow", "the comet canyon", "the rainbow library", "the candy comet", "the star harbor"];
-  const nounPool = ["princess", "fox", "dragon", "wizard", "pirate", "meteor", "clockmaker", "painter", "gardener", "knight"];
-  const actionPool = ["found a secret map", "traded with stars", "outwitted a giggle goblin", "solved a moon riddle", "followed a glowing ribbon", "danced across a bridge", "rescued a sleepy lantern", "opened a pocket of thunder", "borrowed a comet tail", "snuck into a treasure garden"];
-  const setupPool = ["At the edge of dawn", "Under a sky stitched with lanterns", "When the wind carried a tiny melody", "As the moon polished the hills", "After the clouds had rolled away", "While the town bells rang backwards", "Right before the stars decided to wink", "During the hour when everything shimmered", "Just as a comet brushed the horizon", "After a thunderclap turned into laughter"];
-  const consequencePool = ["the hero discovered that every footstep made the world brighter", "the whole horizon glowed with impossible colors", "a chorus of invisible friends began to sing from the trees", "tiny treasures awakened in the grass and danced around their boots", "the air filled with cinnamon, music, and impossible delight", "the path ahead unfolded like a ribbon made of sunrise", "even the shyest shadows turned into glowing companions", "a secret festival sprang to life in the middle of the night", "the stars leaned closer and offered guidance from above", "the adventure grew larger, stranger, and more wonderful with every heartbeat"];
+const adjectivePool = ["glittering", "merry", "whispering", "fuzzy", "cosmic", "sunlit", "sparkly", "moonlit", "jazzy", "curious"];
+    const placePool = ["the velvet forest", "a floating bakery", "the cloud castle", "the lantern market", "the singing sea", "the mirror meadow", "the comet canyon", "the rainbow library", "the candy comet", "the star harbor"];
+    const nounPool = ["princess", "fox", "dragon", "wizard", "pirate", "meteor", "clockmaker", "painter", "gardener", "knight"];
+    const actionPool = ["uncovered a secret map", "traded with stars", "outwitted a giggle goblin", "solved a moon riddle", "followed a glowing ribbon", "danced across a bridge", "rescued a sleepy lantern", "opened a pocket of thunder", "borrowed a comet tail", "snuck into a treasure garden"];
+    const setupPool = ["At the edge of dawn", "Under a sky stitched with lanterns", "When the wind carried a tiny melody", "As the moon polished the hills", "After the clouds had rolled away", "While the town bells rang backwards", "Right before the stars decided to wink", "During the hour when everything shimmered", "Just as a comet brushed the horizon", "After a thunderclap turned into laughter"];
+    const mysterySubjectPool = ["the missing moon muffin", "a vanished silver teacup", "the stolen rainbow ribbon", "a runaway brass clock", "the disappeared star map", "the missing velvet hat", "a hidden basket of blueberry pastries", "a snatched music box", "the borrowed moonstone key", "a clever prank that made everyone think the sky had changed color"];
+    const cluePool = ["a trail of cinnamon crumbs led to the library window", "the only footprints were tiny and perfectly polite", "a single ribbon of light curled around the fountain", "a clock chimed three times even though it was still morning", "the suspect had left behind a note written in glitter glue", "the key clue was a tiny bell that rang only when someone lied", "everyone swore they heard a laugh from the bakery chimney", "a spoon was found tucked inside a pocket watch", "the culprit had used a tiny paintbrush to leave sparkly marks on the floor", "the answer seemed hidden in the rhythm of the town bells"];
+    const suspectPool = ["a polite penguin with a tiny crown", "a sleepy dragon who only wanted a nap", "a clockmaker with glitter in their pockets", "a baker who smelled like cinnamon and secrets", "a gardener who knew every plant by song", "a pirate with a very dramatic hat", "a painter who loved riddles more than sleep", "a wizard who kept losing their keys", "a comet with excellent manners", "a knight who was surprisingly bad at keeping secrets"];
+    const solutionPool = ["the polite penguin had borrowed the moon muffin for a midnight picnic", "the sleepy dragon had hidden the teacup to keep it safe from the wind", "the clockmaker had taken the ribbon to fix a broken music box", "the baker had moved the clock because the bells were too loud", "the gardener had tucked away the star map to protect it from the rain", "the pirate had stolen the hat because it matched their ship's flag", "the painter had taken the pastries to use as color inspiration", "the wizard had hidden the music box to test everyone's detective skills", "the comet had borrowed the moonstone key to open a secret workshop", "the knight had staged the prank because they wanted everyone to laugh at the absurdity of it all"];
 
   state.storyBank = [];
   for (let index = 0; index < count; index += 1) {
@@ -286,8 +304,80 @@ function loadStoryBank() {
     const noun = nounPool[(index * 5) % nounPool.length];
     const action = actionPool[(index * 7) % actionPool.length];
     const setup = setupPool[(index * 13) % setupPool.length];
-    const consequence = consequencePool[(index * 17) % consequencePool.length];
-    state.storyBank.push(`#${index + 1}: ${setup} a ${adjective} ${noun} ${action} ${place}. ${consequence}.`);
+    const mysterySubject = mysterySubjectPool[(index * 7) % mysterySubjectPool.length];
+    const clue = cluePool[(index * 3) % cluePool.length];
+    const clueTwo = cluePool[(index * 5) % cluePool.length];
+    const suspect = suspectPool[(index * 9) % suspectPool.length];
+    const solution = solutionPool[(index * 13) % solutionPool.length];
+    const title = `Mystery of the ${adjective} ${noun}`;
+    const paragraphs = [];
+    paragraphs.push(`${setup}, a ${adjective} ${noun} ${action} ${place}.`);
+    paragraphs.push(`The air around them shimmered like a promise, but the mood shifted when ${mysterySubject} vanished without a trace.`);
+    paragraphs.push(`The first clue was ${clue}.`);
+    paragraphs.push(`The second clue was ${clueTwo}, and suddenly the ${noun} realized this was no ordinary puzzle.`);
+
+    for (let paragraphIndex = 4; paragraphIndex < 59; paragraphIndex += 1) {
+      const flavor = [
+        `The ${noun} checked the corners of ${place} and found a tiny note tucked under a flowerpot, but the writing was too glittery to read at first.`,
+        `Every witness had a different story, and every story sounded suspiciously sincere, which made the case even more delicious.`,
+        `The ${noun} followed the trail of light toward a sleepy bench where a single bell sat waiting like a patient witness.`,
+        `A small crowd gathered, and each person had an alibi that sounded perfectly sensible until the next person spoke.`,
+        `The sky above ${place} seemed to hold its breath while the ${noun} weighed the clues against the obvious nonsense.`,
+        `A tiny puddle of blue paint near the fountain suggested someone had been hurrying, but not necessarily in a guilty way.`,
+        `The ${noun} noticed that the suspect's footprints were neat, tidy, and oddly dramatic, which felt important in the most suspicious way.`,
+        `The case seemed to be growing not smaller but stranger, and the ${noun} loved that.`,
+        `A ribbon of moonlight pointed toward a locked gate, and the lock had been opened with something clever rather than forceful.`,
+        `The ${noun} began to suspect that the missing object was not the real target at all; the real target was the truth.`,
+        `A whisper from the wind suggested the culprit might be ${suspect}, but that was only a hint and not the whole answer.`,
+        `The ${noun} searched the market stalls, the garden beds, and the library shelves, hoping one clue would finally make sense.`,
+        `A trail of glitter led to a bakery window, where someone had left behind a crumb and a very confident smile.`,
+        `The case was full of red herrings, but the ${noun} was so delighted by the nonsense that the puzzle felt like a game.`,
+        `The ${noun} remembered that the missing thing had been taken in a hurry, which meant the culprit had been trying not to be noticed.`,
+        `At the top of a hill, the ${noun} found a tiny brass key that clicked against a pocket watch and made everything feel much more suspicious.`,
+        `The town bells rang again, and this time the rhythm seemed to spell out a pattern if only the ${noun} listened carefully.`,
+        `A very polite goose waddled by wearing a ribbon that matched the color of the missing object, which made the ${noun} pause.`,
+        `The ${noun} realized the clues were not random; they were arranged with a kind of theatrical logic.`,
+        `The trail led to the fountain, where the water shimmered in a way that made the ${noun} think of mirrors and secrets.`,
+        `The ${noun} found a second note hidden inside a teacup, and this one was clearer, sharper, and far more smug.`,
+        `Every clue seemed to point in a different direction, but the ${noun} could feel the right path waiting just beneath the confusion.`,
+        `The case demanded patience, so the ${noun} sat still for a moment and listened to the sounds of ${place}.`,
+        `A tiny laugh echoed from the bakery chimney, and suddenly the puzzle felt delightfully ridiculous.`,
+        `The ${noun} turned over a flowerpot and discovered a scrap of paper covered in sparkles and one very helpful date.`,
+        `The clues began to fit together like a puzzle box, and the ${noun} could almost hear the solution clicking into place.`,
+        `A suspiciously neat stack of pastries sat beside the fountain, as if someone had been preparing for an apology.`,
+        `The ${noun} followed the smell of cinnamon to a hidden door that had been left open just enough for a clever person to notice.`,
+        `The room beyond the door was full of hats, clocks, candy wrappers, and one very important clue tucked under a teacup.`,
+        `The ${noun} could now see that the case was less about theft and more about timing, mood, and a very specific kind of nonsense.`,
+        `A second look at the bell suggested it had been rung by someone trying to draw attention away from the real evidence.`,
+        `The ${noun} smiled because the mystery had become less scary and more charming, which was a very good sign.`,
+        `A painted star on the wall pointed toward a shelf of old books and one hidden compartment full of clues.`,
+        `The ${noun} discovered that the missing object had been moved by someone who wanted to be admired for their cleverness.`,
+        `The case sharpened when the ${noun} noticed that the culprit's motive was not greed but a strange and very sincere idea.`,
+        `A final trail of glitter led to a tiny balcony where a single shoeprint waited beside a lantern.`,
+        `The ${noun} stood there for a long moment and realized the answer had been in plain sight all along.`,
+        `The puzzle was solved not by force but by noticing which clue felt most like a joke and which one felt most like a truth.`,
+        `The ${noun} felt triumphant, not because the mystery had been easy, but because it had been fun.`,
+        `The final scene of the case felt almost theatrical, as if the whole town had been rehearsing for this exact reveal.`,
+        `The ${noun} looked at the evidence one last time and understood that the mystery had been waiting for a careful mind.`,
+        `A soft laugh rose from somewhere nearby, and the ${noun} knew the story was not over yet but the answer was close.`,
+        `The truth was hidden in the smallest detail, and the ${noun} had found it by paying attention.`,
+        `The investigation ended with a grin, a little sparkle, and the satisfying sense that the puzzle had been solved.`,
+        `The ${noun} closed the case with a happy sigh, knowing that the answer had been clever, silly, and exactly right.`,
+        `Every clue had been a breadcrumb, every red herring a distraction, and every detail a piece of the same delightful puzzle.`,
+        `The mystery was solved, and the ${noun} walked away feeling brave, curious, and just a little bit brilliant.`,
+        `The town seemed brighter after the truth was out, as if solving the puzzle had lit the whole place from within.`,
+        `What had seemed like nonsense at first now looked like an elegant little secret, beautifully arranged for someone to discover.`,
+        `And just when the ${noun} thought the last clue had been followed, a final spark of light whispered that maybe the best mysteries always leave a tiny smile behind.`,
+        `The case had been full of surprises, but the final answer was simple once you knew where to look.`,
+        `The ${noun} tucked the lesson away in their mind: the best mysteries are solved with patience, curiosity, and a willingness to laugh.`,
+        `The story of the case ended not with fear but with delight, because every clue had been a doorway to something brighter.`,
+        `The mystery had been solved, and the ${noun} felt proud of the way they had followed the clues to the very end.`
+      ][paragraphIndex - 4];
+      paragraphs.push(flavor);
+    }
+
+    paragraphs.push(`The final answer was ${solution}, and the ${noun} realized the truth had been hiding in plain sight all along.`);
+    state.storyBank.push({ title, paragraphs });
   }
 
   storyCountEl.textContent = `Story bank ready: ${state.storyBank.length.toLocaleString()} tales`;
@@ -296,22 +386,42 @@ function loadStoryBank() {
 
 function renderStorybookPreview() {
   storybookFeedEl.innerHTML = "";
-  const previewStories = state.storyBank.slice(0, 120);
+  const previewStories = state.storyBank.slice(0, 80);
 
   if (!previewStories.length) {
-    const placeholder = document.createElement("div");
+    const placeholder = document.createElement("button");
+    placeholder.type = "button";
     placeholder.className = "storybook-card";
-    placeholder.innerHTML = "<strong>Loading...</strong> The storybook is waking up.";
+    placeholder.innerHTML = "<strong>Loading...</strong><span>The storybook is waking up.</span>";
     storybookFeedEl.appendChild(placeholder);
     return;
   }
 
   previewStories.forEach((story) => {
-    const card = document.createElement("div");
+    const card = document.createElement("button");
+    card.type = "button";
     card.className = "storybook-card";
-    card.innerHTML = `<strong>New tale:</strong> ${story}`;
+    card.innerHTML = `<strong>${story.title}</strong><span>${story.paragraphs[0]}</span>`;
+    card.addEventListener("click", () => openStoryModal(story));
     storybookFeedEl.appendChild(card);
   });
+}
+
+function openStoryModal(story) {
+  storyModalTitleEl.textContent = story.title;
+  storyModalBodyEl.innerHTML = "";
+  story.paragraphs.forEach((paragraph) => {
+    const paragraphEl = document.createElement("p");
+    paragraphEl.textContent = paragraph;
+    storyModalBodyEl.appendChild(paragraphEl);
+  });
+  storyModalEl.hidden = false;
+  document.body.classList.add("modal-open");
+}
+
+function closeStoryModal() {
+  storyModalEl.hidden = true;
+  document.body.classList.remove("modal-open");
 }
 
 function renderInventory() {

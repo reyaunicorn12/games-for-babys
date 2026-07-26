@@ -98,6 +98,53 @@
               <button id="trail-start" class="game-button" type="button">Start glow trail</button>
             </div>
           </article>
+
+          <article class="game-card">
+            <p class="card-label">Mini-game</p>
+            <h3>Treasure Hunt</h3>
+            <p>Find the hidden treasure tile before the sparks die out.</p>
+            <div id="treasure-grid" class="treasure-grid">
+              <button class="treasure-cell" data-index="0" type="button">?</button>
+              <button class="treasure-cell" data-index="1" type="button">?</button>
+              <button class="treasure-cell" data-index="2" type="button">?</button>
+              <button class="treasure-cell" data-index="3" type="button">?</button>
+              <button class="treasure-cell" data-index="4" type="button">?</button>
+              <button class="treasure-cell" data-index="5" type="button">?</button>
+              <button class="treasure-cell" data-index="6" type="button">?</button>
+              <button class="treasure-cell" data-index="7" type="button">?</button>
+              <button class="treasure-cell" data-index="8" type="button">?</button>
+            </div>
+            <div class="game-footer">
+              <span id="treasure-status">Press start to hunt treasure.</span>
+              <button id="treasure-start" class="game-button" type="button">Start treasure hunt</button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <p class="card-label">Mini-game</p>
+            <h3>Storm Boss Battle</h3>
+            <p>Strike the storm boss until it cracks open into confetti.</p>
+            <div class="boss-meter">
+              <div id="boss-health" class="boss-health"></div>
+            </div>
+            <button id="boss-button" class="boss-button" type="button">⚡ Hit the storm boss</button>
+            <div class="game-footer">
+              <span id="boss-status">Press start to wake the boss.</span>
+              <button id="boss-start" class="game-button" type="button">Start boss battle</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="storybook-panel" aria-labelledby="storybook-title">
+          <div class="storybook-header">
+            <div>
+              <p class="panel-kicker">Storybook</p>
+              <h3 id="storybook-title">10,000 tiny adventures</h3>
+            </div>
+            <button id="load-stories" class="game-button" type="button">Load 10,000 stories</button>
+          </div>
+          <p id="story-count" class="story-count">Story bank ready: 0 tales</p>
+          <div id="storybook-feed" class="storybook-feed"></div>
         </section>
 
         <section class="message-panel" aria-live="polite">

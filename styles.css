@@ -144,7 +144,7 @@ h1 {
 }
 
 .content {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -219,7 +219,8 @@ h1 {
 }
 
 .story-choice,
-.game-button {
+.game-button,
+.boss-button {
   border: none;
   border-radius: 999px;
   padding: 10px 14px;
@@ -231,7 +232,8 @@ h1 {
 }
 
 .story-choice:hover,
-.game-button:hover {
+.game-button:hover,
+.boss-button:hover {
   transform: translateY(-1px);
 }
 
@@ -420,6 +422,103 @@ h1 {
 .trail-button.active {
   outline: 4px solid #fff;
   transform: scale(1.05);
+}
+
+.treasure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.treasure-cell {
+  border: none;
+  border-radius: 16px;
+  min-height: 56px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: white;
+  background: linear-gradient(135deg, #0f766e, #34d399);
+  cursor: pointer;
+}
+
+.treasure-cell.found {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+}
+
+.boss-meter {
+  border: 2px solid #8b5cf6;
+  border-radius: 999px;
+  height: 18px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: #fdf2f8;
+}
+
+.boss-health {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f43f5e, #fb923c);
+  transition: width 0.2s ease;
+}
+
+.boss-button {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.storybook-panel {
+  position: relative;
+  overflow: hidden;
+  margin-top: 26px;
+  padding: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 42px rgba(76, 29, 149, 0.2);
+}
+
+.storybook-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.storybook-header h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.story-count {
+  margin: 10px 0 12px;
+  color: #6d28d9;
+  font-weight: 800;
+}
+
+.storybook-feed {
+  display: grid;
+  gap: 8px;
+  max-height: 320px;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.storybook-card {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fdf2f8, #eff6ff);
+  color: #4c1d95;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 1px solid rgba(109, 40, 217, 0.16);
+}
+
+.storybook-card strong {
+  color: #7c3aed;
 }
 
 .message-panel {

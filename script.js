@@ -276,7 +276,8 @@ function loadStoryBank() {
   const placePool = ["the velvet forest", "a floating bakery", "the cloud castle", "the lantern market", "the singing sea", "the mirror meadow", "the comet canyon", "the rainbow library", "the candy comet", "the star harbor"];
   const nounPool = ["princess", "fox", "dragon", "wizard", "pirate", "meteor", "clockmaker", "painter", "gardener", "knight"];
   const actionPool = ["found a secret map", "traded with stars", "outwitted a giggle goblin", "solved a moon riddle", "followed a glowing ribbon", "danced across a bridge", "rescued a sleepy lantern", "opened a pocket of thunder", "borrowed a comet tail", "snuck into a treasure garden"];
-  const outcomePool = ["and the night turned bright", "and everyone cheered", "and a tiny kingdom began to sing", "and the horizon blushed purple", "and the stars hummed along", "and the clouds burst into confetti", "and a golden path appeared", "and the air smelled like cinnamon", "and a new song was born", "and the adventure kept growing"];
+  const setupPool = ["At the edge of dawn", "Under a sky stitched with lanterns", "When the wind carried a tiny melody", "As the moon polished the hills", "After the clouds had rolled away", "While the town bells rang backwards", "Right before the stars decided to wink", "During the hour when everything shimmered", "Just as a comet brushed the horizon", "After a thunderclap turned into laughter"];
+  const consequencePool = ["the hero discovered that every footstep made the world brighter", "the whole horizon glowed with impossible colors", "a chorus of invisible friends began to sing from the trees", "tiny treasures awakened in the grass and danced around their boots", "the air filled with cinnamon, music, and impossible delight", "the path ahead unfolded like a ribbon made of sunrise", "even the shyest shadows turned into glowing companions", "a secret festival sprang to life in the middle of the night", "the stars leaned closer and offered guidance from above", "the adventure grew larger, stranger, and more wonderful with every heartbeat"];
 
   state.storyBank = [];
   for (let index = 0; index < count; index += 1) {
@@ -284,8 +285,9 @@ function loadStoryBank() {
     const place = placePool[(index * 3) % placePool.length];
     const noun = nounPool[(index * 5) % nounPool.length];
     const action = actionPool[(index * 7) % actionPool.length];
-    const outcome = outcomePool[(index * 11) % outcomePool.length];
-    state.storyBank.push(`#${index + 1}: ${adjective} ${noun} ${action} ${place} ${outcome}.`);
+    const setup = setupPool[(index * 13) % setupPool.length];
+    const consequence = consequencePool[(index * 17) % consequencePool.length];
+    state.storyBank.push(`#${index + 1}: ${setup} a ${adjective} ${noun} ${action} ${place}. ${consequence}.`);
   }
 
   storyCountEl.textContent = `Story bank ready: ${state.storyBank.length.toLocaleString()} tales`;
